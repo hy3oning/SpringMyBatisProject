@@ -30,7 +30,7 @@ public class BoardController {
 	public String boardInsert(Board board, Model model) {
 		log.info("insert board =" + board.toString());
 		try {
-			boardService.register(board);
+			boardService.create(board);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "board/failed";
@@ -71,7 +71,7 @@ public class BoardController {
 	public String boardDelete(Board board, Model model) {
 		log.info("boardDelete board =" + board.toString());
 		try {
-			boardService.remove(board.getNo());
+			boardService.delete(board.getNo());
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("message", "%s 님의 정보가 삭제실패되었습니다.".formatted(board.getWriter()));
@@ -102,7 +102,7 @@ public class BoardController {
 	public String boardUpdate(Board b, Model model) {
 		log.info("boardUpdate board =" + b.toString());
 		try {
-			boardService.modify(b);
+			boardService.update(b);
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("message", "%s 님의 정보가 수정이 되지 않았습니다.".formatted(b.getWriter()));
