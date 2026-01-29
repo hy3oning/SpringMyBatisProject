@@ -15,4 +15,6 @@ public interface BoardMapper {
 
 	public List<Board> list() throws Exception;
 
+	public List<Board> search(Board board) throws Exception;
+
 }
