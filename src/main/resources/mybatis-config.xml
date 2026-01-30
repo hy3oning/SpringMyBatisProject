@@ -9,5 +9,4 @@
 	<typeAliases>
 		<package name="com.zeus.domain" />
 	</typeAliases>
-
 </configuration>
