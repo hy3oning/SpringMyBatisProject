@@ -32,13 +32,16 @@ public class BoardController {
 	public String boardInsert(Board board, Model model) {
 		log.info("insert board =" + board.toString());
 		try {
-			boardService.create(board);
+			int count = boardService.create(board);
+			if (count > 0) {
+				model.addAttribute("message", "%s님의 글이 작성되었습니다.".formatted(board.getWriter()));
+				return "board/success";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "board/failed";
 		}
-		model.addAttribute("message", "%s님의 글이 작성되었습니다.".formatted(board.getWriter()));
-		return "board/success";
+		model.addAttribute("message", "%s님의 글이 작성되지않았습니다.".formatted(board.getWriter()));
+		return "board/failed";
 	}
 
 	@GetMapping("/boardList")
@@ -57,7 +60,7 @@ public class BoardController {
 	public String boardDetail(Board b, Model model) {
 		log.info("boardDetail board =" + b.toString());
 		try {
-			Board board = boardService.read(b.getNo());
+			Board board = boardService.read(b);
 			if (board == null) {
 				model.addAttribute("message", "%s 님의 정보가 없습니다.".formatted(board.getWriter()));
 				return "board/failed";
@@ -73,14 +76,17 @@ public class BoardController {
 	public String boardDelete(Board board, Model model) {
 		log.info("boardDelete board =" + board.toString());
 		try {
-			boardService.delete(board.getNo());
+			int count = boardService.delete(board);
+			if (count > 0) {
+				model.addAttribute("message", "%s 님의 정보가 삭제되었습니다.".formatted(board.getWriter()));
+				return "board/success";
+
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("message", "%s 님의 정보가 삭제실패되었습니다.".formatted(board.getWriter()));
-			return "board/failed";
 		}
-		model.addAttribute("message", "%s 님의 정보가 삭제되었습니다.".formatted(board.getWriter()));
-		return "board/success";
+		model.addAttribute("message", "%s 님의 정보가 삭제실패되었습니다.".formatted(board.getWriter()));
+		return "board/failed";
 
 	}
 
@@ -88,7 +94,7 @@ public class BoardController {
 	public String boardUpdateForm(Board b, Model model) {
 		log.info("boardUpdate board =" + b.toString());
 		try {
-			Board board = boardService.read(b.getNo());
+			Board board = boardService.read(b);
 			if (board == null) {
 				model.addAttribute("message", "%s 님의 정보가 없습니다.".formatted(b.getWriter()));
 				return "board/failed";
@@ -104,14 +110,17 @@ public class BoardController {
 	public String boardUpdate(Board b, Model model) {
 		log.info("boardUpdate board =" + b.toString());
 		try {
-			boardService.update(b);
+			int count = boardService.update(b);
+			if (count > 0) {
+				model.addAttribute("message", "%s 님의 정보가 수정되었습니다.".formatted(b.getWriter()));
+				return "board/success";
+
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("message", "%s 님의 정보가 수정이 되지 않았습니다.".formatted(b.getWriter()));
-			return "board/failed";
 		}
-		model.addAttribute("message", "%s 님의 정보가 수정되었습니다.".formatted(b.getWriter()));
-		return "board/success";
+		model.addAttribute("message", "%s 님의 정보가 수정이 되지 않았습니다.".formatted(b.getWriter()));
+		return "board/failed";
 	}
 
 	@GetMapping("/search")
